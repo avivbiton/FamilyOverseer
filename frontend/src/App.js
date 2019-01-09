@@ -7,6 +7,9 @@ import Footer from "./components/Footer";
 import Landing from "./components/pages/Landing";
 import Register from "./components/pages/Register";
 
+
+// TODO: Add reduxrere
+
 class App extends Component {
   render() {
     return (
