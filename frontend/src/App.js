@@ -8,7 +8,7 @@ import Landing from "./components/pages/Landing";
 import Register from "./components/pages/Register";
 
 
-// TODO: Add reduxrere
+// TODO: Add redux
 
 class App extends Component {
   render() {
