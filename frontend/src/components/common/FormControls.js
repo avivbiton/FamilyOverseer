@@ -9,9 +9,11 @@ export const InputControl = ({
     onChange,
     placeholder,
     description,
-    classes
+    classes,
 }) => (
 
+
+        // TODO: Add error display
         <div className="form-group">
             {text ? <label for={id}>{text}</label> : null}
             <input className={`form-control form-control-lg ${classes}`}

@@ -1,8 +1,13 @@
 import React, { Component } from 'react'
-
+import { connect } from "react-redux";
 import { InputControl, ButtonControl } from "../common/FormControls";
 
+import { registerUser } from "../../redux/actions/authActions";
+
 class Register extends Component {
+
+    //TODO: Display loading wheel while the registration is in progress.
+    //TODO: Add input validation
 
     constructor() {
         super();
@@ -11,7 +16,8 @@ class Register extends Component {
             lastName: "",
             email: "",
             password: "",
-            passwordConfirm: ""
+            passwordConfirm: "",
+            errors: {}
         }
     }
 
@@ -22,8 +28,20 @@ class Register extends Component {
     onSubmit = e => {
         e.preventDefault();
 
-        console.log(this.state);
+        const data = {
+            firstName: this.state.firstName,
+            lastName: this.state.lastName,
+            email: this.state.email,
+            password: this.state.password
+        }
 
+        this.props.registerUser(data, this.props.history);
+    }
+
+    componentWillReceiveProps(nextProps) {
+        if (nextProps.errors) {
+            this.setState({ errors: nextProps.errors });
+        }
     }
 
     render() {
@@ -92,4 +110,10 @@ class Register extends Component {
     }
 }
 
-export default Register;
+
+const mapStateToProps = state => ({
+    auth: state.auth,
+    errors: state.errors
+});
+
+export default connect(mapStateToProps, { registerUser })(Register);
