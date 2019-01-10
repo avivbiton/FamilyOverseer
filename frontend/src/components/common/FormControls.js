@@ -1,4 +1,5 @@
 import React from 'react'
+import classnames from "classnames";
 
 export const InputControl = ({
     type,
@@ -10,13 +11,15 @@ export const InputControl = ({
     placeholder,
     description,
     classes,
+    error
 }) => (
 
-
-        // TODO: Add error display
         <div className="form-group">
             {text ? <label for={id}>{text}</label> : null}
-            <input className={`form-control form-control-lg ${classes}`}
+            <input
+                className={classnames(`form-control form-control-lg ${classes}`, {
+                    "is-invalid": error
+                })}
                 type={type}
                 id={id}
                 name={name}
@@ -26,6 +29,7 @@ export const InputControl = ({
                 aria-describedby={`descOf${name}`}
             />
             {description ? <small id={`descOf${name}`} className="form-textd text-muted">{description}</small> : null}
+            <div className="invalid-feedback">{error}</div>
         </div>
 
     );

@@ -7,7 +7,7 @@ import { registerUser } from "../../redux/actions/authActions";
 class Register extends Component {
 
     //TODO: Display loading wheel while the registration is in progress.
-    //TODO: Add input validation
+    //TODO: Add input validation (clientside)
 
     constructor() {
         super();
@@ -60,6 +60,7 @@ class Register extends Component {
                                 value={this.state.firstName}
                                 onChange={this.onInputChange}
                                 placeholder="First Name"
+                                error={this.state.errors.firstName}
                             />
                             <InputControl
                                 type="text"
@@ -68,6 +69,7 @@ class Register extends Component {
                                 value={this.state.lastName}
                                 onChange={this.onInputChange}
                                 placeholder="Last Name"
+                                error={this.state.errors.lastName}
                             />
                             <InputControl
                                 type="email"
@@ -76,6 +78,7 @@ class Register extends Component {
                                 value={this.state.email}
                                 onChange={this.onInputChange}
                                 placeholder="Email Address"
+                                error={this.state.errors.email}
                             />
                             <InputControl
                                 type="password"
@@ -85,6 +88,7 @@ class Register extends Component {
                                 onChange={this.onInputChange}
                                 placeholder="Password"
                                 description="Password must contain at least 6 characters."
+                                error={this.state.errors.password}
                             />
                             <InputControl
                                 type="password"
@@ -93,6 +97,7 @@ class Register extends Component {
                                 value={this.state.passwordConfirm}
                                 onChange={this.onInputChange}
                                 placeholder="Confirm Password"
+                                error={this.state.errors.passwordConfirm}
                             />
                             <ButtonControl
                                 classes="btn-block"
