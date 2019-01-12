@@ -4,9 +4,10 @@ const bcryptjs = require("bcryptjs");
 const User = require("../models/UserModel");
 const jwt = require("jsonwebtoken");
 const vars = require("../app-vars");
-const routeAuth = require("../Authentication/routeAuth");
+const authUser = require("../Authentication/routeAuth");
+const inputValidation = require("./validation/usersValidator");
 
-router.post("/register", (req, res) => {
+router.post("/register", inputValidation.validateRegistration, (req, res) => {
   const user = new User({
     firstName: req.body.firstName,
     lastName: req.body.lastName,
@@ -30,7 +31,7 @@ router.post("/register", (req, res) => {
     }).catch(error => res.status(500).json({ error: "Internal server error" }));
 });
 
-router.post("/login", (req, res) => {
+router.post("/login", inputValidation.validateLogin, (req, res) => {
 
   const { email, password } = req.body;
 
@@ -49,7 +50,7 @@ router.post("/login", (req, res) => {
 
 
 // TEST ROUTE
-router.get("/current", routeAuth, (req, res) => {
+router.get("/current", authUser, (req, res) => {
   return res.json(req.user);
 });
 

@@ -9,6 +9,7 @@ class Register extends Component {
     //TODO: Display loading wheel while the registration is in progress.
     //TODO: Add input validation (clientside)
 
+
     constructor() {
         super();
         this.state = {
