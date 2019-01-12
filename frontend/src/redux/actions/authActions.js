@@ -1,7 +1,7 @@
 import axios from "axios";
 import { createError } from "./errorActions";
-import { setupAuthorization } from "../../Authorization";
-import { SET_USER } from "./types";
+import { setupAuthorization, removeAuthorization } from "../../Authorization";
+import { SET_USER, LOGOUT_USER } from "./types";
 
 export const registerUser = (userData, history) => dispatch => {
     axios.post("/api/users/register", userData)
@@ -23,6 +23,13 @@ export const loginUser = (userData, history) => dispatch => {
                 })
         }).catch(error => dispatch(createError(error.response.data)));
 }
+
+export const logoutUser = (history) => dispatch => {
+    removeAuthorization();
+    dispatch({ type: LOGOUT_USER });
+    history.push("/");
+}
+
 
 export const setUser = (userData) => ({
     type: SET_USER,

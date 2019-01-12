@@ -5,7 +5,7 @@ import { Provider } from "react-redux";
 
 import store from "./redux/store";
 import axios from "axios";
-import { authorizeTokenFromStorage } from "./Authorization";
+import { authorizeTokenFromStorage, removeAuthorization } from "./Authorization";
 import { setUser } from './redux/actions/authActions';
 
 
@@ -15,21 +15,19 @@ import Landing from "./components/pages/Landing";
 import Register from "./components/pages/Register";
 import Login from "./components/pages/Login";
 
-
-
-
 class App extends Component {
 
-  constructor() {
-    super();
+
+  applyAuthorization() {
     authorizeTokenFromStorage();
     axios.get("/api/users/current")
       .then(currentUser => {
         store.dispatch(setUser(currentUser.data));
-      })
+      }).catch(() => removeAuthorization());
   }
 
   render() {
+    this.applyAuthorization();
     return (
       <Provider store={store}>
         <Router>

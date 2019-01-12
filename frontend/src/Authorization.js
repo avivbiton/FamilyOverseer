@@ -17,6 +17,7 @@ export const hasTokenExpired = (key) => {
 
     try {
         const decodedKey = decode(key);
+
         if (decodedKey.exp < Date.now() / 1000) {
             return true;
         }
@@ -32,6 +33,15 @@ export const setupAuthorization = (key) => {
     storeKeyInStorage(key);
 }
 
+export const removeAuthorization = () => {
+    try {
+        setDefaultAuth("");
+        localStorage.removeItem("JWT_TOKEN_KEY");
+    } catch{
+
+    }
+}
+
 const setDefaultAuth = (key) => {
     if (!key) {
         key = "";
@@ -42,3 +52,17 @@ const setDefaultAuth = (key) => {
 const storeKeyInStorage = (key) => {
     localStorage.setItem("JWT_TOKEN_KEY", key);
 }
+
+
+// Refresh token interceptor
+axios.interceptors.request.use(config => {
+
+    if (config.headers.Authorization) {
+        const token = config.headers.Authorization;
+        if (hasTokenExpired(token)) {
+            // refresh token
+        }
+
+    }
+    return config;
+});
