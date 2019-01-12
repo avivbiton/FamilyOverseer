@@ -6,10 +6,6 @@ import { registerUser } from "../../redux/actions/authActions";
 
 class Register extends Component {
 
-    //TODO: Display loading wheel while the registration is in progress.
-    //TODO: Add input validation (clientside)
-
-
     constructor() {
         super();
         this.state = {
@@ -18,12 +14,39 @@ class Register extends Component {
             email: "",
             password: "",
             passwordConfirm: "",
-            errors: {}
+            errors: {},
+            loading: false,
+            signupReady: true
         }
     }
 
+    verifyPasswordsMatch = () => {
+        if (this.state.password !== this.state.passwordConfirm) {
+            this.setState({
+                errors: {
+                    ...this.state.errors,
+                    passwordConfirm: "Passwords do not match"
+                }
+
+            })
+            return false;
+        }
+        else {
+            this.setState({
+                errors: {
+                    ...this.state.errors,
+                    passwordConfirm: undefined
+                }
+            })
+            return true;
+        }
+    }
+
+
     onInputChange = e => {
-        this.setState({ [e.target.name]: e.target.value });
+        this.setState({ [e.target.name]: e.target.value }, () => {
+            this.setState({ signupReady: this.verifyPasswordsMatch() });
+        });
     }
 
     onSubmit = e => {
@@ -36,16 +59,22 @@ class Register extends Component {
             password: this.state.password
         }
 
+
         this.props.registerUser(data, this.props.history);
+        this.setState({ loading: true });
     }
 
     componentWillReceiveProps(nextProps) {
         if (nextProps.errors) {
-            this.setState({ errors: nextProps.errors });
+            this.setState({
+                errors: nextProps.errors,
+                loading: false
+            });
         }
     }
 
     render() {
+
         return (
             <div className="container">
                 <div className="row">
@@ -100,12 +129,14 @@ class Register extends Component {
                                 placeholder="Confirm Password"
                                 error={this.state.errors.passwordConfirm}
                             />
+
                             <ButtonControl
                                 classes="btn-block"
-                                text="Signup"
+                                text={this.state.loading === true ? "Loading..." : "Signup"}
                                 id="register"
                                 name="register"
                                 onClick={this.onSubmit}
+                                disabled={(this.state.loading === false && this.state.signupReady === true) ? false : true}
                             />
                         </form>
                     </div>
@@ -115,7 +146,6 @@ class Register extends Component {
         )
     }
 }
-
 
 const mapStateToProps = state => ({
     auth: state.auth,

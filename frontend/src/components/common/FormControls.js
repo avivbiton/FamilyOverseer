@@ -40,13 +40,15 @@ export const ButtonControl = ({
     id,
     name,
     onClick,
-    classes
+    classes,
+    disabled
 }) => (
         <div className="form-group">
             <button type="button" className={`btn btn-primary ${classes}`}
                 id={id}
                 name={name}
                 onClick={onClick}
+                disabled={disabled}
             >{text}</button>
         </div>
 
