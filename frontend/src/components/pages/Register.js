@@ -20,6 +20,12 @@ class Register extends Component {
         }
     }
 
+    componentWillMount() {
+        if (this.props.auth.isAuthenticated) {
+            this.props.history.push("/");
+        }
+    }
+
     verifyPasswordsMatch = () => {
         if (this.state.password !== this.state.passwordConfirm) {
             this.setState({

@@ -3,8 +3,7 @@ import React, { Component } from 'react'
 class Footer extends Component {
     render() {
         return (
-
-            <footer className="bg-dark text-white mt-3 text-center fixed-bottom">
+            <footer className="bg-dark text-white mt-3 text-center">
 
                 <div className="container">
 

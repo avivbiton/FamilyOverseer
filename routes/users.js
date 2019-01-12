@@ -48,10 +48,12 @@ router.post("/login", inputValidation.validateLogin, (req, res) => {
   });
 })
 
-
-// TEST ROUTE
 router.get("/current", authUser, (req, res) => {
-  return res.json(req.user);
+  return res.json({
+    id: req.user._id,
+    firstName: req.user.firstName,
+    lastName: req.user.lastName
+  });
 });
 
 const signJwt = (user, cb) => {
