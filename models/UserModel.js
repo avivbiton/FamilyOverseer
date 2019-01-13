@@ -17,7 +17,11 @@ let User = new Schema({
   email: {
     type: String,
     required: true
-  }
+  },
+  groups: [{
+    type: Schema.Types.ObjectId,
+    ref: "groups"
+  }]
 });
 
 module.exports = User = mongoose.model("users", User);

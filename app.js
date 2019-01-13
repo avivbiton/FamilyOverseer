@@ -10,6 +10,7 @@ const passportAuth = require("./Authentication/passportAuth");
 
 
 const usersRouter = require("./routes/users");
+const groupsRouter = require("./routes/groups");
 
 const app = express();
 
@@ -32,6 +33,7 @@ mongoose.connect(vars.DB_URI, error => {
 
 //#region use routes
 app.use("/api/users", usersRouter);
+app.use("/api/groups", groupsRouter);
 //#endregion
 
 // catch 404 and forward to error handler
@@ -44,7 +46,7 @@ app.use(function (err, req, res, next) {
   if (err.statusCode == 404) {
     return res.status(404).json({ 404: "Route not found" });
   }
-  return res.status(500).json({ error: "Internal server error" });
+  return res.status(500).json({ error: err });
 });
 
 app.listen(vars.SERVER_PORT, () =>

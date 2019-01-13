@@ -7,6 +7,7 @@ const vars = require("../app-vars");
 const authUser = require("../Authentication/routeAuth");
 const inputValidation = require("./validation/usersValidator");
 
+
 router.post("/register", inputValidation.validateRegistration, (req, res) => {
   const user = new User({
     firstName: req.body.firstName,
@@ -52,8 +53,19 @@ router.get("/current", authUser, (req, res) => {
   return res.json({
     id: req.user._id,
     firstName: req.user.firstName,
-    lastName: req.user.lastName
+    lastName: req.user.lastName,
+    groups: req.user.groups
   });
+});
+
+
+router.get("/groups", authUser, (req, res) => {
+
+  req.user.populate("groups", (err, response) => {
+    if (err) return res.status(400).json(err);
+    return res.json({ groups: response.groups });
+  });
+
 });
 
 const signJwt = (user, cb) => {

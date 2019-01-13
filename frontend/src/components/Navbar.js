@@ -2,6 +2,7 @@ import React, { Component, } from 'react'
 import { Link } from "react-router-dom";
 import { connect } from "react-redux";
 import { logoutUser } from '../redux/actions/authActions';
+
 class Navbar extends Component {
     constructor() {
         super();

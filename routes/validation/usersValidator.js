@@ -1,4 +1,6 @@
 const Schema = require("validate");
+const utilis = require("./validationUtilis");
+
 
 // Regex taken from https://stackoverflow.com/questions/46155/how-to-validate-an-email-address-in-javascript
 const isEmail = (email) => {
@@ -68,26 +70,13 @@ const loginValidation = new Schema({
 
 });
 
-const validateRequest = (schema, req, res, next) => {
-    const errors = schema.validate(req.body);
-    if (errors.length == 0) {
-        next();
-    } else {
-        let mappedErrors = {};
-        errors.forEach(err => {
-            mappedErrors[err.path] = err.message;
-        })
-        return res.status(400).json(mappedErrors);
-    }
-}
-
 
 module.exports.validateRegistration = (req, res, next) => {
-    validateRequest(registrationValidation, req, res, next);
+    utilis.validateRequest(registrationValidation, req, res, next);
 }
 
 module.exports.validateLogin = (req, res, next) => {
-    validateRequest(loginValidation, req, res, next);
+    utilis.validateRequest(loginValidation, req, res, next);
 }
 
 
