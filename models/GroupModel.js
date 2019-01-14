@@ -34,12 +34,6 @@ let Group = new Schema({
 
 Group.methods.hasMember = function (userId) {
     return this.members.findIndex(member => member.toString() == userId.toString()) == -1 ? false : true;
-    /*for (let i = 0; i < this.members.length; i++) {
-        const element = this.members[i];
-        if (element.toString() == userId)
-            return true;
-    }
-    return false;*/
 }
 
 Group.methods.isUserInvited = function (userId) {

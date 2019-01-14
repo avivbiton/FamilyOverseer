@@ -14,6 +14,7 @@ import Footer from "./components/Footer";
 import Landing from "./components/pages/Landing";
 import Register from "./components/pages/Register";
 import Login from "./components/pages/Login";
+import Dashboard from './components/pages/dashboard/Dashboard';
 
 class App extends Component {
 
@@ -36,6 +37,7 @@ class App extends Component {
             <Route exact path="/" component={Landing} />
             <Route exact path="/register" component={Register} />
             <Route exact path="/login" component={Login} />
+            <Route exact path="/dashboard" component={Dashboard} />
             <Footer />
           </div>
         </Router>

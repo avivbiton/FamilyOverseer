@@ -1,12 +1,11 @@
 const express = require("express");
 const router = express.Router();
-
 const mongoose = require("mongoose");
 
 const GroupModel = require("../models/GroupModel");
 const UserModel = require("../models/UserModel");
-const authenticateUser = require("../Authentication/routeAuth");
 
+const authenticateUser = require("../Authentication/routeAuth");
 const validateReq = require("./validation/groupsValidator");
 
 
