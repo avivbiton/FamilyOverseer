@@ -53,8 +53,7 @@ router.get("/current", authUser, (req, res) => {
   return res.json({
     id: req.user._id,
     firstName: req.user.firstName,
-    lastName: req.user.lastName,
-    groups: req.user.groups
+    lastName: req.user.lastName
   });
 });
 

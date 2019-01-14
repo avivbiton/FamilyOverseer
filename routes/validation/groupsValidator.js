@@ -1,6 +1,9 @@
 const Schema = require("validate");
 const utilis = require("./validationUtilis");
 
+
+const isEmail = utilis.isEmail;
+
 const groupCreationValidator = new Schema({
 
     name: {
@@ -14,6 +17,20 @@ const groupCreationValidator = new Schema({
     },
 });
 
+const groupInviteValidator = new Schema({
+
+    userEmail: {
+        type: String,
+        use: { isEmail },
+        required: true,
+        message: {
+            required: "Please enter the user's email.",
+            isEmail: "You've entered an invalid email address."
+        }
+    }
+});
+
+
 module.exports.creation = (req, res, next) => {
     utilis.validateRequest(groupCreationValidator, req, res, next);
 }
@@ -23,5 +40,5 @@ module.exports.addTask = (req, res, next) => {
 }
 
 module.exports.invite = (req, res, next) => {
-
+    utilis.validateRequest(groupInviteValidator, req, res, next);
 }

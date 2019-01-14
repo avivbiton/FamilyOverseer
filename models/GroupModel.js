@@ -32,5 +32,26 @@ let Group = new Schema({
 
 });
 
+Group.methods.hasMember = function (userId) {
+    return this.members.findIndex(member => member.toString() == userId.toString()) == -1 ? false : true;
+    /*for (let i = 0; i < this.members.length; i++) {
+        const element = this.members[i];
+        if (element.toString() == userId)
+            return true;
+    }
+    return false;*/
+}
+
+Group.methods.isUserInvited = function (userId) {
+    return this.invites.findIndex(inv => inv.toString() == userId.toString()) === -1 ? false : true;
+}
+
+Group.methods.removeMember = function (userId) {
+    const index = this.members.findIndex(member => member.toString() == userId.toString());
+    if (index !== -1) {
+        this.members.splice(index, 1);
+    }
+}
+
 module.exports = Group = mongoose.model("groups", Group);
 
