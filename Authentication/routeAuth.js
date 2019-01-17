@@ -7,9 +7,17 @@ const authenticate = (req, res, next) => {
     next();
 }
 
+const passportAuth = (req, res, next) => {
+    return passport.authenticate("jwt", { session: false }, (err, user, info) => {
+        if (err || !user) return res.status(400).json({ error: "You are not authorized to be able to do this." })
+        req.user = user;
+        return next();
+    })(req, res, next);
+}
+
 const authMiddleware = [
     authenticate,
-    passport.authenticate("jwt", { session: false })
+    passportAuth
 ];
 
 authMiddleware.unsignToken = (token) => {

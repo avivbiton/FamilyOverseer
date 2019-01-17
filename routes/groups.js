@@ -11,19 +11,20 @@ const validateReq = require("./validation/groupsValidator");
 
 const groupIsValid = (req, res, next) => {
     const groupId = req.params.id;
-    if (mongoose.Types.ObjectId.isValid(groupId)) {
-        GroupModel.findById(groupId).then(group => {
-            if (group) {
-                req.group = group;
-                next();
-            } else { res.status(404).json({ error: "Group ID not found" }) }
-        })
-            .catch(err => res.status(404).json({ error: "Group ID not found" }));
-    } else {
-        res.status(404).json({ error: "Group ID is invalid" });
+    try {
+        if (mongoose.Types.ObjectId.isValid(groupId)) {
+            GroupModel.findById(groupId).then(group => {
+                if (group) {
+                    req.group = group;
+                    next();
+                } else { throw "Group not found" }
+            })
+                .catch(err => { throw "group not found" });
+        } else { throw "Gropu id is Invalid" }
+    } catch (error) {
+        res.status(404).json({ error: "Group ID not found." });
     }
 }
-
 
 const userIsGroupMember = (req, res, next) => {
     const { user, group } = req;

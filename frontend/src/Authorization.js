@@ -10,7 +10,9 @@ export const authorizeTokenFromStorage = () => {
         } else {
             setupAuthorization(token);
         }
+        return true;
     }
+    return false;
 }
 
 export const hasTokenExpired = (key) => {

@@ -72,7 +72,7 @@ class Login extends Component {
                             />
                             <ButtonControl
                                 classes="btn-block"
-                                text={this.state.loading === true ? "Loading..." : "Signup"}
+                                text={this.state.loading === true ? "Loading..." : "Login"}
                                 id="register"
                                 name="register"
                                 onClick={this.onSubmit}

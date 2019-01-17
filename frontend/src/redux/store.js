@@ -4,12 +4,14 @@ import thunk from "redux-thunk";
 // import reducers
 import authReducer from "./reducers/authReducer";
 import errorReducer from "./reducers/errorReducer";
+import groupsReducer from "./reducers/groupsReducer";
 
 const initialState = {};
 
 const rootReducer = combineReducers({
     auth: authReducer,
-    errors: errorReducer
+    errors: errorReducer,
+    groups: groupsReducer
 });
 
 const middleware = [thunk];

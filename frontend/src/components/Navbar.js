@@ -10,6 +10,10 @@ class Navbar extends Component {
             authorized: false
         }
     }
+    componentDidMount() {
+        this.setState({ authorized: this.props.auth.isAuthenticated });
+    }
+
     componentWillReceiveProps(nextProps) {
         if (nextProps.auth.isAuthenticated) {
             this.setState({ authorized: nextProps.auth.isAuthenticated });

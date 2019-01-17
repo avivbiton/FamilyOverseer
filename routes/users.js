@@ -50,7 +50,7 @@ router.post("/login", inputValidation.validateLogin, (req, res) => {
 })
 
 router.get("/current", authUser, (req, res) => {
-  return res.json({
+  return res.status(200).json({
     id: req.user._id,
     firstName: req.user.firstName,
     lastName: req.user.lastName
@@ -62,7 +62,7 @@ router.get("/groups", authUser, (req, res) => {
 
   req.user.populate("groups", (err, response) => {
     if (err) return res.status(400).json(err);
-    return res.json({ groups: response.groups });
+    return res.status(200).json({ groups: response.groups });
   });
 
 });
