@@ -15,7 +15,7 @@ export const InputControl = ({
 }) => (
 
         <div className="form-group">
-            {text ? <label for={id}>{text}</label> : null}
+            {text ? <label htmlFor={id}>{text}</label> : null}
             <input
                 className={classnames(`form-control form-control-lg ${classes}`, {
                     "is-invalid": error

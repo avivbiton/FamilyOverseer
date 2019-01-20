@@ -3,6 +3,10 @@ img {
   width: 100%;
 }
 
+.btn-hover:hover {
+  background-color: rgb(31, 30, 30);
+}
+
 .landing {
   position: relative;
   background: url('./background.jpg') no-repeat;

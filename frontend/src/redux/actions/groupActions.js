@@ -24,3 +24,73 @@ export const getGroupInformation = (groupId) => dispatch => {
             dispatch(clearErrors());
         }).catch(error => dispatch(createError(error.response.data)));
 }
+
+export const createGroupTask = (groupId, text, dueDate, callback) => dispatch => {
+
+    const data = {
+        text: text
+    }
+    if (typeof dueDate !== "undefined")
+        data.dueDate = dueDate;
+    axios.post(`/api/groups/${groupId}/task`, data)
+        .then(() => {
+            if (callback)
+                callback();
+            dispatch(getGroupInformation(groupId));
+        })
+        .catch(error => dispatch(createError(error.response.data)));
+}
+
+export const completeGroupTask = (groupId, taskId) => dispatch => {
+
+    axios.post(`/api/groups/${groupId}/completeTask/${taskId}`)
+        .then(result => {
+            dispatch(getGroupInformation(groupId));
+        }).catch(error => dispatch(createError(error.response.data)));
+
+}
+
+export const editGroupTask = (groupId, taskId, text, dueDate, callback) => dispatch => {
+    const data = {
+        text: text
+    }
+    if (typeof dueDate !== "undefined")
+        data.dueDate = dueDate;
+
+    axios.post(`/api/groups/${groupId}/editTask/${taskId}`, data)
+        .then(response => {
+            if (callback)
+                callback();
+            dispatch(getGroupInformation(groupId));
+        }).catch(error => dispatch(createError(error.response.data)));
+}
+
+export const createGroup = (name, callback) => dispatch => {
+
+    const data = {
+        name: name
+    }
+
+    axios.post("/api/groups/create", data)
+        .then(result => {
+            if (callback) callback();
+        })
+        .catch(error => dispatch(createError(error.response.data)));
+}
+
+export const leaveGroup = (groupId, callback) => dispatch => {
+
+    axios.post(`/api/groups/${groupId}/leave`)
+        .then(result => {
+            if (callback) callback();
+        })
+        .catch(error => dispatch(createError(error.response.data)));
+}
+
+export const archiveCompletedTasks = (groupId) => dispatch => {
+    axios.post(`/api/groups/${groupId}/archiveTasks`)
+        .then(() => {
+            dispatch(getGroupInformation(groupId));
+        }).catch(error => dispatch(createError(error.response.data)));
+}
+

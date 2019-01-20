@@ -3,6 +3,7 @@ const utilis = require("./validationUtilis");
 
 
 const isEmail = utilis.isEmail;
+const isValidDate = utilis.isValidDate;
 
 const groupCreationValidator = new Schema({
 
@@ -30,13 +31,30 @@ const groupInviteValidator = new Schema({
     }
 });
 
+const groupAddTaskValidator = new Schema({
+    text: {
+        type: String,
+        required: true,
+        message: {
+            required: "Please enter task description",
+        }
+    },
+    dueDate: {
+        type: String,
+        required: false,
+        use: { isValidDate },
+        message: "Please enter a valid date format"
+    }
+});
+
+
 
 module.exports.creation = (req, res, next) => {
     utilis.validateRequest(groupCreationValidator, req, res, next);
 }
 
 module.exports.addTask = (req, res, next) => {
-
+    utilis.validateRequest(groupAddTaskValidator, req, res, next);
 }
 
 module.exports.invite = (req, res, next) => {

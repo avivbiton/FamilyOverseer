@@ -32,6 +32,20 @@ const userIsGroupMember = (req, res, next) => {
     next();
 }
 
+const taskIsActive = (req, res, next) => {
+
+    const taskId = req.params.taskId;
+    const group = req.group;
+    if (typeof taskId === "undefined") return res.status(400).json({ error: "Unable to retrive task ID" });
+
+    const index = group.activeTasks.findIndex(t => t._id == taskId);
+    if (index === -1)
+        return res.status(404).json({ error: "This task is not active any more." })
+
+    req.task = group.activeTasks[index];
+    next();
+}
+
 router.post("/create", authenticateUser, validateReq.creation, (req, res) => {
     const name = req.body.name;
     const group = new GroupModel({
@@ -85,7 +99,6 @@ router.post("/:id/leave",
     groupIsValid,
     userIsGroupMember,
     (req, res) => {
-
         const { user, group } = req;
         group.removeMember(user._id);
         if (group.members.length == 0) {
@@ -102,7 +115,6 @@ router.post("/:id/join",
     authenticateUser,
     groupIsValid,
     (req, res) => {
-
         const { group, user } = req;
 
         if (group.isUserInvited(user._id) == false)
@@ -140,26 +152,78 @@ router.post("/:id/task",
     groupIsValid,
     userIsGroupMember,
     (req, res) => {
+        const { group, user } = req;
 
+        const newTask = group.createTask(req.body.text);
+        newTask.createdby = user._id;
+
+        if (typeof req.body.dueDate !== "undefined")
+            newTask.dueDate = req.body.dueDate;
+
+        group.activeTasks.push(newTask);
+        group.save().then(group => res.status(200).json({ success: "Your new task has been created." })
+        ).catch(error => res.status(400).json(error));
+    });
+
+
+// update existing task
+router.post("/:id/editTask/:taskId",
+    authenticateUser,
+    validateReq.addTask,
+    groupIsValid,
+    taskIsActive,
+    userIsGroupMember,
+    (req, res) => {
+        const { group, task } = req;
+        task.text = req.body.text;
+
+        if (req.body.dueDate) {
+            task.dueDate = req.body.dueDate;
+        } else {
+            task.dueDate = undefined;
+        }
+        group.save().then(() => {
+            res.json({ success: "Task modified" });
+        }).catch(error => res.status(500).json({ error: "Interal server error 500" }));
     });
 
 // Complete task by task ID
-router.post("/:id/completeTask",
+router.post("/:id/completeTask/:taskId",
+    authenticateUser,
+    groupIsValid,
+    taskIsActive,
+    userIsGroupMember,
+    (req, res) => {
+        const { group, task } = req;
+        if (task.completed === true)
+            return res.status(400).json({ error: "This task is already completed" });
+
+        task.completed = true;
+        group.save().then(savedGroup => {
+            return res.json(savedGroup);
+        }).catch(error => res.status(500).json({ error: "Unable to save task information." }));
+    });
+
+// Archive all completed tasks
+router.post("/:id/archiveTasks",
     authenticateUser,
     groupIsValid,
     userIsGroupMember,
     (req, res) => {
 
+        const { group } = req;
+        let toArchive = group.activeTasks.filter(t => t.completed);
+        group.activeTasks = group.activeTasks.filter(t => !t.completed);
+
+        group.archivedTasks.concat(toArchive);
+
+        group.save().then(() => {
+            return res.json({ success: "All completed tasks were archived." });
+        }).catch(error => res.status(500).json(error));
+
+
     });
 
-// Archive Task
-router.post("/:id/archiveTask",
-    authenticateUser,
-    groupIsValid,
-    userIsGroupMember,
-    (req, res) => {
-
-    });
 
 // Get full info about the group
 router.get("/:id",

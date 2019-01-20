@@ -46,6 +46,8 @@ app.use(function (err, req, res, next) {
   if (err.statusCode == 404) {
     return res.status(404).json({ 404: "Route not found" });
   }
+
+  console.error(err);
   return res.status(500).json({ error: err });
 });
 

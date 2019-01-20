@@ -2,7 +2,6 @@ const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
 
 const taskSchema = {
-    id: Schema.Types.ObjectId,
     startDate: Date, text: String, dueDate: Date, completed: Boolean,
     createdby: {
         type: Schema.Types.ObjectId,
@@ -45,6 +44,16 @@ Group.methods.removeMember = function (userId) {
     if (index !== -1) {
         this.members.splice(index, 1);
     }
+}
+
+Group.methods.createTask = function (taskText) {
+    const newTask = {
+        text: taskText,
+        startDate: Date.now(),
+        completed: false
+    }
+
+    return newTask;
 }
 
 module.exports = Group = mongoose.model("groups", Group);
