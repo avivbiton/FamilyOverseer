@@ -94,3 +94,33 @@ export const archiveCompletedTasks = (groupId) => dispatch => {
         }).catch(error => dispatch(createError(error.response.data)));
 }
 
+export const inviteUserToGroup = (groupId, userEmail, callback) => dispatch => {
+
+    const data = {
+        userEmail: userEmail
+    }
+    axios.post(`/api/groups/${groupId}/invite`, data)
+        .then(result => {
+            if (callback) callback(result.data.userName);
+            dispatch(clearErrors());
+        })
+        .catch(error => dispatch(createError(error.response.data)));
+}
+
+export const acceptGroupInvite = (groupId) => dispatch => {
+    axios.post(`/api/groups/${groupId}/join`)
+        .then(result => {
+
+        })
+        .catch(error => dispatch(createError(error.response.data)));
+}
+
+export const declineGroupInvite = (groupId) => dispatch => {
+    axios.post(`/api/groups/${groupId}/decline`)
+        .then(result => {
+
+        })
+        .catch(error => dispatch(createError(error.response.data)));
+}
+
+

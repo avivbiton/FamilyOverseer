@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
 import { connect } from "react-redux";
+import { Link } from "react-router-dom";
 import Moment from 'react-moment';
 
 // icons
@@ -7,6 +8,7 @@ import addIcon from "../../images/add-icon.png";
 import removeIcon from "../../images/remove-icon.png";
 import editIcon from "../../images/edit-icon.png";
 import leaveIcon from "../../images/sign-out.svg";
+import inviteIcon from "../../images/plus.png";
 
 import { getGroupInformation, createGroupTask, completeGroupTask, editGroupTask, leaveGroup, archiveCompletedTasks } from "../../redux/actions/groupActions";
 import LoadingSpinner from '../common/LoadingSpinner';
@@ -116,6 +118,7 @@ class GroupPage extends Component {
             this.props.archiveCompletedTasks(this.state.groupId);
         }
     }
+
 
     renderTask(task, index) {
         let style = task.completed ? { backgroundColor: "green" } : {}
@@ -230,8 +233,14 @@ class GroupPage extends Component {
                         </button>
                         <button type="button" className="btn btn-default"
                             onClick={this.onArchiveCompletedClicked.bind(this)}>
-                            <img src={removeIcon} alt="Add" style={iconStyle} />
+                            <img src={removeIcon} alt="archive" style={iconStyle} />
                             <span className="lead align-middle"> Archive Completed</span>
+                        </button>
+                        <button type="button" className="btn btn-default" >
+                            <Link to={`/invite/${this.state.groupId}`}>
+                                <img src={inviteIcon} alt="invite" style={iconStyle} />
+                            </Link>
+                            <span className="lead align-middle"> Invite</span>
                         </button>
                         <button type="button" className="btn btn-default"
                             onClick={this.onLeaveGroupClicked.bind(this)}>

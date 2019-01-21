@@ -2,12 +2,11 @@ import React, { Component } from 'react'
 
 class Footer extends Component {
     render() {
+
         return (
-            <footer className="bg-dark text-white mt-3 text-center">
-
-                <div className="container">
-
-                    <ul className="list-unstyled list-inline text-center mt-1">
+            <footer className="footer bg-dark text-white">
+                <div className="container text-center">
+                    <ul className="list-unstyled list-inline text-center">
                         <li className="list-inline-item">
                             <a href="http://www.google.com" className="btn-floating btn-fb mx-1">
                                 <i className="fab fa-facebook-f"> </i>
@@ -24,24 +23,18 @@ class Footer extends Component {
                             </a>
                         </li>
                         <li className="list-inline-item">
-                            <a href="http://www.google.com" className="btn-floating btn-li mx-1">
+                            <a href="https://www.linkedin.com/in/aviv-biton-8746b5162/" className="btn-floating btn-li mx-1">
                                 <i className="fab fa-linkedin-in"> </i>
                             </a>
                         </li>
                         <li className="list-inline-item">
-                            <a href="http://www.google.com" className="btn-floating btn-dribbble mx-1">
-                                <i className="fab fa-dribbble"> </i>
+                            <a href="https://github.com/avivbiton" className="btn-floating btn-dribbble mx-1">
+                                <i className="fab fa-github"> </i>
                             </a>
                         </li>
                     </ul>
-
                 </div>
-                <div className="footer-copyright text-center mb-2">© 2019 Copyright
-                  <a href="http://www.github.com/avivbiton"> Aviv Biton</a>
-                </div>
-
             </footer>
-
         )
     }
 }

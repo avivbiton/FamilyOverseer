@@ -73,21 +73,25 @@ router.post("/:id/invite",
         const { group, user } = req;
 
         // user is not inviting themselves
-        if (user.email == inviteEmail) return res.status(400).json({ error: "You can not invite yourself!" });
+        if (user.email == inviteEmail) return res.status(400).json({ userEmail: "You can not invite yourself!" });
 
         // find the user
         UserModel.findOne({ email: inviteEmail })
             .then(userFound => {
-                if (!userFound) return res.status(404).json({ error: "Email not found" });
+                if (!userFound) return res.status(404).json({ userEmail: "Email not found" });
 
                 if (group.isUserInvited(userFound._id))
-                    return res.status(400).json({ error: "This user is already invited to the group" });
+                    return res.status(400).json({ userEmail: "This user is already invited to the group" });
 
                 if (group.hasMember(userFound._id))
-                    return res.status(400).json({ error: "This user is already in the group" });
+                    return res.status(400).json({ userEmail: "This user is already in the group" });
 
                 group.invites.push(userFound._id);
-                group.save().then(() => res.json({ success: "User is invited." }))
+                userFound.invites.push(group._id);
+                group.save().then(() => userFound.save().then(() => res.json({
+                    success: "User is invited.",
+                    userName: `${userFound.firstName} ${userFound.lastName}`
+                })))
                     .catch(error => res.json(error));
 
             }).catch(err => res.json(err));
@@ -101,11 +105,14 @@ router.post("/:id/leave",
     (req, res) => {
         const { user, group } = req;
         group.removeMember(user._id);
+
+        user.groups.splice(user.groups.findIndex(id => id.toString() == group._id.toString()), 1);
+
         if (group.members.length == 0) {
             group.remove();
             return res.json({ success: "You've left the group." });
         }
-        group.save().then(() => res.json({ success: "You've left the group." }))
+        group.save().then(() => user.save().then(() => res.json({ success: "You've left the group." })))
             .catch(error => res.status(400).json(error));
     });
 
@@ -123,7 +130,11 @@ router.post("/:id/join",
         const index = group.invites.findIndex(id => id.toString() == user._id.toString());
         group.invites.splice(index, 1);
         group.members.push(user._id);
-        group.save().then(() => res.json({ success: `You've joined the group ${group.name}` }))
+
+        user.invites.splice(user.invites.findIndex(id => id.toString() == group._id.toString()), 1);
+        user.groups.push(group._id);
+
+        group.save().then(() => user.save().then(() => res.json({ success: `You've joined the group ${group.name}` })))
             .catch(error => res.status(400).json(error));
 
     });
@@ -141,7 +152,8 @@ router.post("/:id/decline",
 
         const index = group.invites.findIndex(id => id.toString() == user._id.toString());
         group.invites.splice(index, 1);
-        group.save().then(() => res.json({ success: `You've declined the invitation to the group ${group.name}` }))
+        user.invites.splice(user.invites.findIndex(id => id.toString() == group._id.toString()), 1);
+        group.save().then(() => user.save().then(() => res.json({ success: `You've declined the invitation to the group ${group.name}` })))
             .catch(error => res.status(400).json(error));
     });
 

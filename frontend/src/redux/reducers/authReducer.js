@@ -1,4 +1,4 @@
-import { SET_USER, LOGOUT_USER } from "../actions/types";
+import { SET_USER, LOGOUT_USER, GET_PENDING_INVITES } from "../actions/types";
 
 const initState = {
     user: {},
@@ -19,6 +19,11 @@ export default function (state = initState, action) {
                 ...state,
                 user: {},
                 isAuthenticated: false
+            }
+        case GET_PENDING_INVITES:
+            return {
+                ...state,
+                pendingInvites: action.payload
             }
         default:
             return state;

@@ -2,6 +2,7 @@ const express = require("express");
 const router = express.Router();
 const bcryptjs = require("bcryptjs");
 const User = require("../models/UserModel");
+const GroupModel = require("../models/GroupModel");
 const jwt = require("jsonwebtoken");
 const vars = require("../app-vars");
 const authUser = require("../Authentication/routeAuth");
@@ -65,6 +66,14 @@ router.get("/groups", authUser, (req, res) => {
     return res.status(200).json({ groups: response.groups });
   });
 
+});
+
+
+// returns pending invites for the user
+router.get("/invites", authUser, (req, res) => {
+  User.findById(req.user.id).populate("invites", "name")
+    .then(data => res.json(data.invites))
+    .catch(error => res.status(500).json(error));
 });
 
 const signJwt = (user, cb) => {

@@ -21,7 +21,12 @@ let User = new Schema({
   groups: [{
     type: Schema.Types.ObjectId,
     ref: "groups"
+  }],
+  invites: [{
+    type: Schema.Types.ObjectId,
+    ref: "groups"
   }]
+
 });
 
 module.exports = User = mongoose.model("users", User);

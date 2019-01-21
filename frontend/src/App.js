@@ -20,6 +20,8 @@ import Login from "./components/pages/Login";
 import Dashboard from './components/pages/dashboard/Dashboard';
 import LoadingSpinner from './components/common/LoadingSpinner';
 import GroupPage from './components/pages/GroupPage';
+import InviteToGroup from './components/pages/InviteToGroup';
+import PendingInvites from './components/pages/PendingInvites';
 
 // shim is for the .finally on promise import
 shim();
@@ -72,6 +74,8 @@ class App extends Component {
             <Route exact path="/login" component={Login} />
             <Route exact path="/dashboard" component={Dashboard} />
             <Route exact path="/group/:id" component={GroupPage} />
+            <Route exact path="/invite/:id" component={InviteToGroup} />
+            <Route exact path="/pendingInvites" component={PendingInvites} />
             <Footer />
           </div>
         </Router>
