@@ -51,7 +51,7 @@ if (vars.NODE_ENV == "Production") {
   });
 }
 
-app.listen(vars.SERVER_PORT, () =>
+app.listen(process.env.PORT || 5000, () =>
   console.log(`Server is running on port ${vars.SERVER_PORT}`)
 );
 
