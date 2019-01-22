@@ -23,7 +23,7 @@ app.use(cookieParser());
 app.use(passport.initialize());
 
 if (vars.NODE_ENV == "Production") {
-  app.use(express.static(path.join(__dirname, "frontend", "build", "index.html")));
+  app.use(express.static(path.join(__dirname, "frontend", "build")));
 }
 
 //#endregion
@@ -42,22 +42,6 @@ app.use("/api/users", usersRouter);
 app.use("/api/groups", groupsRouter);
 //#endregion
 
-// catch 404 and forward to error handler
-app.use(function (req, res, next) {
-  next(createError(404));
-});
-
-// error handler
-app.use(function (err, req, res, next) {
-  if (err) {
-    if (err.statusCode == 404) {
-      return res.status(404).json({ 404: "Route not found" });
-    }
-
-    console.error(err);
-    return res.status(500).json({ error: err });
-  }
-});
 
 if (vars.NODE_ENV == "Production") {
   app.get("*", (req, res) => {
